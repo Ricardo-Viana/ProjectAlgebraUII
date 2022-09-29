@@ -10,7 +10,8 @@ import java.util.Scanner;
 
 public class app {
     public static void main(String[] args) throws Exception {
-        int counter = 0;
+        int rowCounter = 0;
+        int columnCounter = 0;
         Scanner scan = new Scanner(System.in);
         int ordemMatriz = 0;
         while (ordemMatriz < 2) {
@@ -40,13 +41,29 @@ public class app {
                 }
             }
         }
-        matriz = divisaoLinha(0, 0, matriz); // Tornar o primeiro elemento da matriz == 1;
-        while(counter < matriz[0].length){
-            for(int i = 0; i < matriz.length; i++){
-
-            }
+        // Enquanto um contador não for igual a ordem da matriz fazer 
+        // com que os elementos matriz[contador][contador] sejam iguais a 1 (Matriz identidade)
+        while(columnCounter < matriz[rowCounter].length){
+                for(int i = columnCounter; i < matriz.length; i++){
+                    if(matriz[i][columnCounter] != 0){
+                        matriz = divisaoLinha(i, columnCounter, matriz);
+                    }
+                }
+                for(int i = 0; i < matriz.length; i++){
+                    if(i != columnCounter){
+                        matriz = multiplicaoESubtracaoLinha(i,columnCounter,matriz);
+                    }
+                }
+            columnCounter += 1;
         }
+        for(int i = 0, z = 0; i < matriz.length; i++){
+    for(int j = 0; j < matriz[i].length; j++){
+        System.out.println(matriz[i][j]);
+        
     }
+} 
+} 
+//Para iterar a matriz, sempre que quiser
 
     private static boolean determinanteSingular(double[][] matriz, int ordemMatriz) {
         switch (ordemMatriz) {
@@ -117,5 +134,12 @@ public class app {
             matriz[linha][j] = matriz[linha][j] / valor;
         }
         return matriz;
+    }
+
+    private static double[][] multiplicaoESubtracaoLinha(int linha,int verificadorUm,double[][] matriz){
+        for(int j = 0; j < matriz[linha].length; j++) {
+            matriz[linha][j] = matriz[linha][j] -(matriz[linha][j]*matriz[verificadorUm][j]);
+        }            
+        return matriz;    
     }
 }
