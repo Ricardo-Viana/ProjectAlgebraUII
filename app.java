@@ -55,10 +55,11 @@ public class app {
                         matriz = divisaoLinha(i, columnCounter, matriz, matrizIdentidade);
                     }
                 }
-                for(int i = 0; i < matriz.length; i++){
-                    if(i != columnCounter){
-                        matriz = multiplicaoESubtracaoLinha(i,columnCounter,matriz, matrizIdentidade);
-                    }
+                for(int i = columnCounter+1; i < matriz.length; i++){
+                    matriz = multiplicaoESubtracaoLinha(i,columnCounter,matriz);
+                }
+                if(columnCounter == matriz.length - 1){
+                    matriz = multiplicaoESubtracaoLinha(columnCounter,columnCounter,matriz);
                 }
             columnCounter += 1;
         }
@@ -66,6 +67,19 @@ public class app {
         System.out.println("\n");
         printMatriz(matriz, matriz.length);
 } 
+
+
+    private static double[][] multiplicaoESubtracaoLinhaIdentidade(int linhaDoUm,double[][] matrizIdentidade, double[][] matriz) {
+        // Todas as multiplicações vão ser com a um número na linha da variável linhaDoUm
+        for(int i = 0; i < matrizIdentidade.length; i++) {
+            for(int j = 0; j < matrizIdentidade[i].length; j++) {
+                if(i!= linhaDoUm) {
+                    matrizIdentidade[i][j] = matrizIdentidade[i][j] -(1*matrizIdentidade[linhaDoUm][j]);
+                }
+            }  
+        }
+        return matrizIdentidade;
+    }
 
 
     private static boolean determinanteSingular(double[][] matriz, int ordemMatriz) {
@@ -152,12 +166,23 @@ public class app {
         return matriz;
     }
 
-    private static double[][] multiplicaoESubtracaoLinha(int linha,int verificadorUm,double[][] matriz, double[][] matrizIdentidade){
-        for(int j = 0; j < matriz[linha].length; j++) {
-            double tmp = matriz[linha][j];
-            matriz[linha][j] = matriz[linha][j] -(matriz[linha][j]*matriz[verificadorUm][j]);
-            matrizIdentidade[linha][j] = matrizIdentidade[linha][j] - (tmp*matrizIdentidade[verificadorUm][j]);
-        }            
+    private static double[][] multiplicaoESubtracaoLinha(int linha,int verificadorUm,double[][] matriz){
+            double valor = matriz[linha][verificadorUm];
+            int counter = 0;
+            if(verificadorUm != matriz.length-1){
+            for(int j = 0; j < matriz[linha].length; j++) {
+                matriz[linha][j] = matriz[linha][j] -(valor*matriz[verificadorUm][j]);
+            }
+            }
+            // Pego os valores da coluna do verificadorUm que estão acima do linha do valor do verificadorUm.
+            // valor tem que ser igual ao valor de cima
+            while(counter < verificadorUm){
+                counter += 1;
+                valor = matriz[verificadorUm - counter][verificadorUm];
+                for(int j = 0; j < matriz[linha].length; j++) {
+                    matriz[verificadorUm-counter][j] = matriz[verificadorUm-counter][j] - (valor*matriz[verificadorUm][j]);
+                }
+            }    
         return matriz;    
     }
 
