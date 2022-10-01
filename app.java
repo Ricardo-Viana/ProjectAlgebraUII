@@ -15,7 +15,7 @@ public class app {
         Scanner scan = new Scanner(System.in);
         int ordemMatriz = 0;
         while (ordemMatriz < 2) {
-            System.out.println("Qual a ordem da matriz que deseja escalonar?(2,3,4)");
+            System.out.println("Qual a ordem da matriz que deseja escalonar?(Ex:2,3,4)");
             ordemMatriz = Integer.parseInt(scan.nextLine());
         }
         double[][] matriz = new double[ordemMatriz][ordemMatriz]; double[][] matrizIdentidade = new double[ordemMatriz][ordemMatriz];
@@ -56,10 +56,10 @@ public class app {
                     }
                 }
                 for(int i = columnCounter+1; i < matriz.length; i++){
-                    matriz = multiplicaoESubtracaoLinha(i,columnCounter,matriz);
+                    matriz = multiplicaoESubtracaoLinha(i,columnCounter,matriz, matrizIdentidade);
                 }
                 if(columnCounter == matriz.length - 1){
-                    matriz = multiplicaoESubtracaoLinha(columnCounter,columnCounter,matriz);
+                    matriz = multiplicaoESubtracaoLinha(columnCounter,columnCounter,matriz, matrizIdentidade);
                 }
             columnCounter += 1;
         }
@@ -166,13 +166,14 @@ public class app {
         return matriz;
     }
 
-    private static double[][] multiplicaoESubtracaoLinha(int linha,int verificadorUm,double[][] matriz){
+    private static double[][] multiplicaoESubtracaoLinha(int linha,int verificadorUm,double[][] matriz, double[][] matrizIdentidade) {
             double valor = matriz[linha][verificadorUm];
             int counter = 0;
             if(verificadorUm != matriz.length-1){
-            for(int j = 0; j < matriz[linha].length; j++) {
-                matriz[linha][j] = matriz[linha][j] -(valor*matriz[verificadorUm][j]);
-            }
+                for(int j = 0; j < matriz[linha].length; j++) {
+                    matriz[linha][j] = matriz[linha][j] -(valor*matriz[verificadorUm][j]);
+                    matrizIdentidade[linha][j] = matrizIdentidade[linha][j] -(valor*matrizIdentidade[verificadorUm][j]);
+                }
             }
             // Pego os valores da coluna do verificadorUm que estão acima do linha do valor do verificadorUm.
             // valor tem que ser igual ao valor de cima
@@ -181,6 +182,7 @@ public class app {
                 valor = matriz[verificadorUm - counter][verificadorUm];
                 for(int j = 0; j < matriz[linha].length; j++) {
                     matriz[verificadorUm-counter][j] = matriz[verificadorUm-counter][j] - (valor*matriz[verificadorUm][j]);
+                    matrizIdentidade[verificadorUm-counter][j] = matrizIdentidade[verificadorUm-counter][j] - (valor*matrizIdentidade[verificadorUm][j]);
                 }
             }    
         return matriz;    
@@ -209,13 +211,15 @@ public class app {
     }
 
     private static void printMatriz(double[][] matriz, int quebra){
+        System.out.println("--------------------------------------");
         for(int i = 0; i < matriz.length; i++){
             for(int j = 0; j < matriz[i].length; j++){
-                System.out.print(matriz[i][j] + " ");
+                System.out.print(String.format("%.4f", matriz[i][j]) + " ");
                 if(j % (quebra - 1) == 0 && j > 0){
                     System.out.println("\n");
                 }
             }
         }
+        System.out.println("--------------------------------------");
     }
 }
