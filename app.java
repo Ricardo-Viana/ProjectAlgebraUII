@@ -14,8 +14,8 @@ public class app {
         int columnCounter = 0;
         Scanner scan = new Scanner(System.in);
         int ordemMatriz = 0;
-        while (ordemMatriz < 2) {
-            System.out.println("Qual a ordem da matriz que deseja escalonar?(Ex:2,3,4)");
+        while (ordemMatriz < 1) {
+            System.out.println("Qual a ordem da matriz que deseja escalonar?(Ex:1,2,3,4)");
             ordemMatriz = Integer.parseInt(scan.nextLine());
         }
         double[][] matriz = new double[ordemMatriz][ordemMatriz]; double[][] matrizIdentidade = new double[ordemMatriz][ordemMatriz];
@@ -66,24 +66,17 @@ public class app {
         printMatriz(matrizIdentidade, matrizIdentidade.length);
         System.out.println("\n");
         printMatriz(matriz, matriz.length);
+        scan.close();
+        return;
 } 
-
-
-    private static double[][] multiplicaoESubtracaoLinhaIdentidade(int linhaDoUm,double[][] matrizIdentidade, double[][] matriz) {
-        // Todas as multiplicações vão ser com a um número na linha da variável linhaDoUm
-        for(int i = 0; i < matrizIdentidade.length; i++) {
-            for(int j = 0; j < matrizIdentidade[i].length; j++) {
-                if(i!= linhaDoUm) {
-                    matrizIdentidade[i][j] = matrizIdentidade[i][j] -(1*matrizIdentidade[linhaDoUm][j]);
-                }
-            }  
-        }
-        return matrizIdentidade;
-    }
-
 
     private static boolean determinanteSingular(double[][] matriz, int ordemMatriz) {
         switch (ordemMatriz) {
+            case 1:
+                if(matriz[0][0] != 0){
+                    return false;
+                }
+                return true; 
             case 2:
                 if (determinanteOrdemDois(matriz, ordemMatriz) == 0) {
                     return true;
@@ -215,7 +208,10 @@ public class app {
         for(int i = 0; i < matriz.length; i++){
             for(int j = 0; j < matriz[i].length; j++){
                 System.out.print(String.format("%.4f", matriz[i][j]) + " ");
-                if(j % (quebra - 1) == 0 && j > 0){
+                if(matriz.length != 1 && j % (quebra - 1) == 0 && j > 0){
+                    System.out.println("\n");
+                }
+                else if(matriz.length == 1){
                     System.out.println("\n");
                 }
             }
