@@ -194,18 +194,19 @@ public class app {
                     if(verificador == 1){
                         setPivoColuna(i);
                     }
-                    for(int z = 0; z < matriz[marcadorDeLinha].length; z++){
-                        for(int w = j; w < matriz.length; w++){
+                    for(int z = j; z < matriz.length; z++){
+                        for(int w = 0; w < matriz[marcadorDeLinha].length; w++){
                             trocado = true;
-                            double tmp = matriz[getPivoLinha()][z];
-                            matriz[getPivoLinha()][z] = matriz[w][z];
-                            matriz[w][z] = tmp;
+                            double tmp = matriz[getPivoLinha()][w];
+                            matriz[getPivoLinha()][w] = matriz[z][w];
+                            matriz[z][w] = tmp;
                             if(getMatrizQuadrada() == true){
-                                tmp = matrizIdentidade[getPivoLinha()][z];
-                                matrizIdentidade[getPivoLinha()][z] = matrizIdentidade[w][z];
-                                matrizIdentidade[w][z] = tmp;
+                                tmp = matrizIdentidade[getPivoLinha()][w];
+                                matrizIdentidade[getPivoLinha()][w] = matrizIdentidade[z][w];
+                                matrizIdentidade[z][w] = tmp;
                             }
                         }
+                        if(trocado == true) break;
                     }
                     break;
                 }
